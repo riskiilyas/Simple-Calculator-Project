@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         val buttonHasil = findViewById<Button>(R.id.buttonHasil)
         val textViewHasil = findViewById<TextView>(R.id.textHasil)
         val buttonTeam = findViewById<ImageView>(R.id.buttonAboutTeam)
+        val buttonReset = findViewById<Button>(R.id.buttonReset)
         val calculator = Calculator(editTextAngka1, editTextAngka2)
 
         buttonTambah.setOnClickListener {
@@ -43,21 +45,42 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonHasil.setOnClickListener {
-            if (editTextAngka1.text.toString().isBlank() || editTextAngka2.text.toString()
-                    .isBlank()
-            ) {
+            if (editTextAngka1.text.toString().isBlank() || editTextAngka2.text.toString().isBlank()) {
                 Toast.makeText(this, "Isi Dulu Inputnya!", Toast.LENGTH_SHORT).show()
             } else {
-                val hasil = calculator.calculate(textViewOperasi.text.toString())
+                var hasil = 0F
+                when (textViewOperasi.text.toString()) {
+                    "+" -> {
+                        hasil = editTextAngka1.text.toString()
+                            .toFloat() + editTextAngka2.text.toString().toFloat()
+                    }
+                    "-" -> {
+                        hasil = editTextAngka1.text.toString()
+                            .toFloat() - editTextAngka2.text.toString().toFloat()
+                    }
+                    "x" -> {
+                        hasil = editTextAngka1.text.toString()
+                            .toFloat() * editTextAngka2.text.toString().toFloat()
+                    }
+                    "/" -> {
+                        hasil = editTextAngka1.text.toString()
+                            .toFloat() / editTextAngka2.text.toString().toFloat()
+                    }
+                }
                 textViewHasil.text = hasil.toString()
-            }
                 Toast.makeText(this, textViewHasil.text.toString(), Toast.LENGTH_SHORT).show()
                 textViewHasil.isVisible = true
             }
+        }
 
         buttonTeam.setOnClickListener {
-            val intentToTeamActivity = Intent(this, TeamActivity::class.java)
-            startActivity(intentToTeamActivity)
+            // Buat Intent untuk berpindah Activity
+        }
+
+        buttonReset.setOnClickListener {
+            editTextAngka1.text.clear()
+            editTextAngka2.text.clear()
+            textViewHasil.text = ""
         }
     }
 }
